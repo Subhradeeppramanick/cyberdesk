@@ -1,10 +1,10 @@
 """
 urlintel.py - public-infrastructure analysis for URLs found in complaints.
 
-Everything here inspects the *infrastructure* of a link - never people:
-structural phishing heuristics, live DNS resolution, TLS certificate
-expiry and HTTP security headers. Network checks degrade gracefully when
-the demo runs offline.
+Everything here inspects a link - never people. By default it only applies
+structural phishing heuristics to the text of the URL and makes no network
+requests. Optional live DNS/TLS checks are off unless explicitly enabled, and
+refuse any host that resolves to a non-public address.
 """
 
 import ipaddress
@@ -108,13 +108,32 @@ def heuristic_signals(url: str) -> list:
     return signals
 
 
+MAX_URL_LENGTH = 2048
+
+
+def _public_addresses(host: str) -> list:
+    """Resolve host and return its addresses only if EVERY one is a public,
+    globally routable IP. Loopback, private, link-local, reserved and
+    multicast targets raise ValueError so the server cannot be pointed at
+    internal networks."""
+    infos = socket.getaddrinfo(host, 443, type=socket.SOCK_STREAM)
+    addrs = sorted({info[4][0] for info in infos})
+    if not addrs:
+        raise OSError("no addresses")
+    for addr in addrs:
+        if not ipaddress.ip_address(addr.split("%")[0]).is_global:
+            raise ValueError("resolves to a non-public address; check blocked")
+    return addrs
+
+
 def dns_lookup(host: str, timeout: float = 4.0) -> dict:
-    """Live A/AAAA resolution via the system resolver."""
+    """Live A/AAAA resolution. Only used when live checks are explicitly
+    enabled; refuses hosts that resolve to non-public addresses."""
     result = {"live": False, "addresses": [], "error": ""}
     try:
-        infos = socket.getaddrinfo(host, None)
-        addrs = sorted({info[4][0] for info in infos})
-        result.update(live=True, addresses=addrs[:8])
+        result.update(live=True, addresses=_public_addresses(host)[:8])
+    except ValueError as exc:
+        result["error"] = str(exc)
     except socket.gaierror:
         result["error"] = "does not resolve (NXDOMAIN or no network)"
     except OSError as exc:
@@ -127,7 +146,10 @@ def tls_expiry(host: str, timeout: float = 4.0) -> dict:
     result = {"live": False, "error": ""}
     ctx = ssl.create_default_context()
     try:
-        with socket.create_connection((host, 443), timeout=timeout) as raw:
+        # Connect to the already-validated public IP, not the name, so a DNS
+        # answer cannot change between the safety check and the connection.
+        ip = _public_addresses(host)[0]
+        with socket.create_connection((ip, 443), timeout=timeout) as raw:
             with ctx.wrap_socket(raw, server_hostname=host) as tls:
                 cert = tls.getpeercert()
         issuer = ", ".join(f"{k}={v}" for rdn in cert.get("issuer", ()) for k, v in rdn)
@@ -135,13 +157,17 @@ def tls_expiry(host: str, timeout: float = 4.0) -> dict:
         expires = datetime.strptime(not_after, "%b %d %H:%M:%S %Y %Z").replace(tzinfo=timezone.utc)
         days = (expires - datetime.now(timezone.utc)).days
         result.update(live=True, issuer=issuer, valid_to=not_after, days_left=days)
+    except ValueError as exc:
+        result["error"] = str(exc)
     except (ssl.SSLError, socket.timeout, OSError) as exc:
         result["error"] = f"no valid TLS on 443 ({exc})"
     return result
 
 
-def analyze_url(url: str, live: bool = True, timeout: float = 4.0) -> dict:
-    """Full public-infrastructure profile for one URL."""
+def analyze_url(url: str, live: bool = False, timeout: float = 4.0) -> dict:
+    """URL profile. Offline structural heuristics by default; DNS/TLS checks
+    run only when live=True (opt-in, local use, public hosts only)."""
+    url = (url or "")[:MAX_URL_LENGTH]
     signals = heuristic_signals(url)
     score = sum(points for _, points, _ in signals)
     verdict = "LIKELY PHISHING" if score >= 50 else ("SUSPICIOUS" if score >= 25 else "NO STRONG SIGNALS")
@@ -155,7 +181,8 @@ def analyze_url(url: str, live: bool = True, timeout: float = 4.0) -> dict:
         "score": score,
         "verdict": verdict,
         "signals": [{"signal": s, "points": p, "detail": d} for s, p, d in signals],
-        "method": "structural heuristics + live public infrastructure checks",
+        "method": ("structural heuristics + live public infrastructure checks"
+                   if live else "structural heuristics only (offline, nothing is fetched)"),
     }
     if live and host and not _is_ip_literal(host):
         report["dns"] = dns_lookup(host, timeout)
