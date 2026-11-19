@@ -44,7 +44,7 @@
       </div>
     </div>
     <p class="fine-print">Demo dashboard inspired by police cybercell workflows. Counts are computed
-    from the bundled fictional case file - no real complaints are stored or processed.</p>
+    from the bundled fictional case file - no real complaints are accepted or stored.</p>
   </section>
 
   <!-- Cases -->
@@ -70,10 +70,13 @@
   <section id="view-triage" class="view">
     <div class="panel">
       <h2>Complaint auto-triage</h2>
-      <p>Paste a complaint narrative. CyberDesk routes it to a category with transparent,
-      rules-based reasoning and extracts indicators (URLs, IPs, UPI handles, phone numbers, IFSC codes).</p>
-      <textarea id="triage-input" rows="6" placeholder="Example: I got an SMS saying my SBI account will be blocked. I clicked the link, entered my netbanking password and OTP, and 50000 rupees were debited to some UPI handle..."></textarea>
-      <button class="btn" id="triage-run">Categorise complaint</button>
+      <p>Pick one of the bundled <strong>fictional</strong> sample complaints. CyberDesk routes it to a
+      category with transparent, rules-based reasoning and extracts indicators (URLs, UPI handles, etc.).</p>
+      <p class="fine-print">This demo does not accept typed or pasted complaints. Please do not enter
+      real complaints or personal data.</p>
+      <select id="triage-select"></select>
+      <textarea id="triage-input" rows="6" readonly></textarea>
+      <button class="btn" id="triage-run">Categorise sample complaint</button>
       <div id="triage-result" class="result"></div>
     </div>
   </section>
@@ -82,8 +85,9 @@
   <section id="view-url" class="view">
     <div class="panel">
       <h2>Suspicious URL analyser</h2>
-      <p>Checks the <em>infrastructure</em> of a link found in a complaint: structural phishing
-      heuristics, live DNS resolution and TLS certificate expiry. It never looks up people.</p>
+      <p>Scores the <em>text</em> of a link with structural phishing heuristics (brand impersonation,
+      risky TLD, punycode, <code>@</code> trick...). In this demo it runs offline: nothing is fetched,
+      resolved or stored, and it never looks up people. Do not enter links from real complaints.</p>
       <div class="row">
         <input id="url-input" type="text" placeholder="http://sbi-kyc-verify.top/login">
         <button class="btn" id="url-run">Analyse</button>
@@ -96,8 +100,8 @@
   <section id="view-ifsc" class="view">
     <div class="panel">
       <h2>Bank branch lookup (IFSC)</h2>
-      <p>Validates an IFSC from a mule-account lead and resolves the bank branch against public
-      RBI-published data. IFSC codes identify branches, not people.</p>
+      <p>Validates an IFSC format and resolves the bank branch from a small bundled sample
+      (try SBIN0000001, HDFC0000123 or ICIC0000001). IFSC codes identify branches, not people.</p>
       <div class="row">
         <input id="ifsc-input" type="text" placeholder="SBIN0000001">
         <button class="btn" id="ifsc-run">Look up</button>
@@ -125,8 +129,9 @@
       <h3 class="contact-subhead">Important Notice</h3>
       <div class="notice-box">
         <p>CyberDesk is an <strong>original hackathon demonstration project</strong>. It is not an
-        official police system, it does not store or process real complaints, and it cannot be
-        used to report an actual crime.</p>
+        official police system, it is not endorsed by or connected to any police, government or
+        military body, it does not store or process real complaints, and it cannot be used to report an
+        actual crime. Do not enter real personal data. This is not legal advice.</p>
         <p>To report a real cybercrime in India, use the
         <a href="https://cybercrime.gov.in" target="_blank" rel="noopener">National Cybercrime
         Reporting Portal (cybercrime.gov.in)</a> or call the national helpline
