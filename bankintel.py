@@ -1,11 +1,10 @@
 """
 bankintel.py - IFSC validation and bank-branch lookup.
 
-IFSC codes identify bank *branches*, not people, so this module is safe to
-run live. It validates the code format, then tries the public IFSC API at
-ifsc.razorpay.com (built on RBI-published data) and falls back to a small
-bundled offline sample when there is no network. Every response is labelled
-with its source so nobody mistakes a demo fallback for a live lookup.
+IFSC codes identify bank *branches*, not people. By default the lookup uses
+only a small bundled offline sample. If live lookups are explicitly enabled it
+tries the public IFSC API at ifsc.razorpay.com first and falls back to the
+sample. Every response is labelled with its source.
 """
 
 import json
@@ -43,7 +42,7 @@ def validate_ifsc(code: str) -> bool:
     return bool(IFSC_PATTERN.match((code or "").strip().upper()))
 
 
-def lookup_ifsc(code: str, timeout: float = 5.0, live: bool = True) -> dict:
+def lookup_ifsc(code: str, timeout: float = 5.0, live: bool = False) -> dict:
     code = (code or "").strip().upper()
     if not validate_ifsc(code):
         return {
@@ -80,11 +79,11 @@ def lookup_ifsc(code: str, timeout: float = 5.0, live: bool = True) -> dict:
             "address": sample["ADDRESS"],
             "upi": sample["UPI"], "neft": sample["NEFT"],
             "rtgs": sample["RTGS"], "imps": sample["IMPS"],
-            "source": "offline sample (network unavailable)",
+            "source": "offline sample" + ("" if live else " (live lookup disabled)"),
         }
 
     return {
         "ifsc": code, "valid_format": True, "found": False,
-        "error": "Not found. The live registry may be unreachable from this demo.",
-        "source": "offline sample (network unavailable)",
+        "error": "Not in the bundled offline sample. Try SBIN0000001, HDFC0000123 or ICIC0000001.",
+        "source": "offline sample" + ("" if live else " (live lookup disabled)"),
     }
