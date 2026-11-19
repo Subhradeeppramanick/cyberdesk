@@ -163,3 +163,18 @@ footer {
   padding: 16px 28px; color: var(--muted); font-size: 12px;
   max-width: 1200px; margin: 0 auto;
 }
+
+/* Contact */
+.contact-subhead { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; }
+.contact-list { list-style: none; font-size: 14px; }
+.contact-list li { padding: 6px 0; color: var(--muted); }
+.contact-list strong { color: var(--text); margin-right: 6px; }
+.contact-list a { color: var(--accent); text-decoration: none; }
+.contact-list a:hover { text-decoration: underline; }
+.notice-box {
+  background: #0d1117; border: 1px solid var(--amber); border-radius: 8px;
+  padding: 14px; font-size: 13px;
+}
+.notice-box p { margin-bottom: 8px; }
+.notice-box p:last-child { margin-bottom: 0; }
+.notice-box a { color: var(--accent); }
