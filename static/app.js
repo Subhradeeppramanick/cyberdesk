@@ -1,4 +1,4 @@
-/* CyberDesk frontend - talks to the local stdlib-Python API. */
+/* CyberDesk frontend - talks to the stdlib-Python API. */
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -103,15 +103,31 @@ async function showCase(id, row) {
 }
 
 /* ---------- Triage ---------- */
+let samplesCache = [];
+
+async function loadSamples() {
+  const data = await api("/api/samples");
+  samplesCache = data.samples;
+  $("#triage-select").innerHTML = samplesCache.map((s) =>
+    `<option value="${escapeHtml(s.id)}">${escapeHtml(s.id)} - ${escapeHtml(s.title)}</option>`).join("");
+  showSample();
+}
+
+function showSample() {
+  const s = samplesCache.find((x) => x.id === $("#triage-select").value);
+  $("#triage-input").value = s ? s.text : "";
+}
+$("#triage-select").addEventListener("change", showSample);
+
 $("#triage-run").addEventListener("click", async () => {
-  const text = $("#triage-input").value.trim();
+  const sampleId = $("#triage-select").value;
   const box = $("#triage-result");
-  if (!text) { box.innerHTML = `<p class="error-text">Paste a complaint narrative first.</p>`; return; }
+  if (!sampleId) { box.innerHTML = `<p class="error-text">Choose a sample first.</p>`; return; }
   box.innerHTML = `<p>Analysing...</p>`;
   const r = await api("/api/triage", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({text}),
+    body: JSON.stringify({sample_id: sampleId}),
   });
   if (r.error) { box.innerHTML = `<p class="error-text">${escapeHtml(r.error)}</p>`; return; }
 
@@ -147,7 +163,7 @@ $("#url-run").addEventListener("click", async () => {
   const url = $("#url-input").value.trim();
   const box = $("#url-result");
   if (!url) { box.innerHTML = `<p class="error-text">Enter a URL first.</p>`; return; }
-  box.innerHTML = `<p>Analysing (live DNS/TLS checks can take a few seconds)...</p>`;
+  box.innerHTML = `<p>Analysing ...</p>`;
   const r = await api("/api/analyze", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -168,14 +184,14 @@ $("#url-run").addEventListener("click", async () => {
     </div>
     ${r.dns ? `
     <div class="result-box">
-      <h3>DNS (live)</h3>
+      <h3>DNS (live, local mode)</h3>
       ${r.dns.live
         ? `<p>Resolves to: ${r.dns.addresses.map(escapeHtml).join(", ") || "no addresses"}</p>`
         : `<p class="error-text">${escapeHtml(r.dns.error || "lookup unavailable")}</p>`}
     </div>` : ""}
     ${r.tls ? `
     <div class="result-box">
-      <h3>TLS certificate (live)</h3>
+      <h3>TLS certificate (live, local mode)</h3>
       ${r.tls.live
         ? `<table>
              <tr><td>Issuer</td><td>${escapeHtml(r.tls.issuer)}</td></tr>
@@ -214,3 +230,4 @@ $("#ifsc-run").addEventListener("click", async () => {
 /* ---------- boot ---------- */
 loadDashboard();
 loadCases();
+loadSamples();
