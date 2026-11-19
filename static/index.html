@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberDesk - Cybercrime Investigation Support Toolkit</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">&#128737;</span>
+    <div>
+      <h1>CyberDesk</h1>
+      <p class="tagline">Cybercrime Investigation Support Toolkit</p>
+    </div>
+  </div>
+  <span class="demo-badge">HACKATHON DEMO &middot; ALL CASE DATA IS FICTIONAL</span>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-view="dashboard">Dashboard</button>
+  <button class="tab" data-view="cases">Case Files</button>
+  <button class="tab" data-view="triage">Complaint Triage</button>
+  <button class="tab" data-view="url">URL Analyser</button>
+  <button class="tab" data-view="ifsc">Bank IFSC Lookup</button>
+</nav>
+
+<main>
+
+  <!-- Dashboard -->
+  <section id="view-dashboard" class="view active">
+    <div class="cards" id="stat-cards"></div>
+    <div class="panel-grid">
+      <div class="panel">
+        <h2>Cases by category</h2>
+        <div id="chart-category" class="bars"></div>
+      </div>
+      <div class="panel">
+        <h2>Cases by status</h2>
+        <div id="chart-status" class="bars"></div>
+      </div>
+    </div>
+    <p class="fine-print">Demo dashboard inspired by police cybercell workflows. Counts are computed
+    from the bundled fictional case file - no real complaints are stored or processed.</p>
+  </section>
+
+  <!-- Cases -->
+  <section id="view-cases" class="view">
+    <div class="cases-layout">
+      <div class="panel case-list-panel">
+        <h2>Fictional case files</h2>
+        <table class="case-table">
+          <thead>
+            <tr><th>ID</th><th>Title</th><th>Category</th><th>Status</th><th>Priority</th></tr>
+          </thead>
+          <tbody id="case-rows"></tbody>
+        </table>
+      </div>
+      <div class="panel case-detail-panel" id="case-detail">
+        <h2>Case detail</h2>
+        <p class="placeholder">Select a case to view its narrative and evidence timeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Triage -->
+  <section id="view-triage" class="view">
+    <div class="panel">
+      <h2>Complaint auto-triage</h2>
+      <p>Paste a complaint narrative. CyberDesk routes it to a category with transparent,
+      rules-based reasoning and extracts indicators (URLs, IPs, UPI handles, phone numbers, IFSC codes).</p>
+      <textarea id="triage-input" rows="6" placeholder="Example: I got an SMS saying my SBI account will be blocked. I clicked the link, entered my netbanking password and OTP, and 50000 rupees were debited to some UPI handle..."></textarea>
+      <button class="btn" id="triage-run">Categorise complaint</button>
+      <div id="triage-result" class="result"></div>
+    </div>
+  </section>
+
+  <!-- URL analyser -->
+  <section id="view-url" class="view">
+    <div class="panel">
+      <h2>Suspicious URL analyser</h2>
+      <p>Checks the <em>infrastructure</em> of a link found in a complaint: structural phishing
+      heuristics, live DNS resolution and TLS certificate expiry. It never looks up people.</p>
+      <div class="row">
+        <input id="url-input" type="text" placeholder="http://sbi-kyc-verify.top/login">
+        <button class="btn" id="url-run">Analyse</button>
+      </div>
+      <div id="url-result" class="result"></div>
+    </div>
+  </section>
+
+  <!-- IFSC -->
+  <section id="view-ifsc" class="view">
+    <div class="panel">
+      <h2>Bank branch lookup (IFSC)</h2>
+      <p>Validates an IFSC from a mule-account lead and resolves the bank branch against public
+      RBI-published data. IFSC codes identify branches, not people.</p>
+      <div class="row">
+        <input id="ifsc-input" type="text" placeholder="SBIN0000001">
+        <button class="btn" id="ifsc-run">Look up</button>
+      </div>
+      <div id="ifsc-result" class="result"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>CyberDesk is an original hackathon demonstration project. It is not an official police
+  system, and it does not access government databases or anyone's private records.</p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
