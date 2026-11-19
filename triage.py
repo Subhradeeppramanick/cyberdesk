@@ -129,11 +129,11 @@ def extract_iocs(text: str) -> dict:
     body = text or ""
     urls = re.findall(r"(?:https?://|www\.)[^\s,;\"')<>]+", body, flags=re.I)
     bare_domains = re.findall(
-        r"\b(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:com|in|net|org|top|xyz|info|shop|live|site|online|icu|club)\b",
+        r"\b(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:com|in|net|org|top|xyz|info|shop|live|site|online|icu|club|example)\b",
         body, flags=re.I)
     ips = re.findall(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", body)
     ips = [ip for ip in ips if all(0 <= int(octet) <= 255 for octet in ip.split("."))]
-    upi = re.findall(r"\b[\w.\-]{2,}@(?:ybl|okhdfcbank|okicici|oksbi|okaxis|paytm|upi|axl|ibl)\b",
+    upi = re.findall(r"\b[\w.\-]{2,}@(?:ybl|okhdfcbank|okicici|oksbi|okaxis|paytm|upi|axl|ibl|example)\b",
                      body, flags=re.I)
     emails = re.findall(r"\b[\w.+-]+@[\w-]+\.[\w.]+\b", body)
     phones = re.findall(r"\b(?:\+91[-\s]?)?[6-9]\d{9}\b", body)
