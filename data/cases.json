@@ -1,6 +1,6 @@
 {
   "fictional": true,
-  "notice": "Every complaint, name, phone number, handle and transaction below is invented for this demo. Any resemblance to real persons or cases is coincidental.",
+  "notice": "Every complaint, name, handle and transaction below is invented for this demo. Domains use the reserved .example name and payment handles and phone numbers are placeholders that are not meant to identify anyone. Any resemblance to real persons, accounts or cases is coincidental.",
   "cases": [
     {
       "id": "CD-2026-1001",
@@ -11,11 +11,11 @@
       "complainant": "Rima Chatterjee",
       "city": "Kolkata",
       "filed_on": "2026-11-12",
-      "narrative": "Complainant received an SMS claiming her SBI account would be blocked without KYC verification. She clicked the link http://sbi-kyc-verify.top/login and entered her netbanking credentials, card details and CVV. Within an hour, three transactions totalling 84,500 INR were debited to UPI handle fastpay247@ybl. The link was shared from phone +91 9830011223.",
+      "narrative": "Complainant received an SMS claiming her SBI account would be blocked without KYC verification. She clicked the link http://sbi-kyc-verify.example/login and entered her netbanking credentials, card details and CVV. Within an hour, three transactions totalling 84,500 INR were debited to UPI handle payee-demo-1@example. The link was shared from phone +91 XXXXX XXXXX (masked placeholder).",
       "timeline": [
         {"date": "2026-11-12 10:20", "event": "Complaint filed at cybercell portal; acknowledgement issued."},
         {"date": "2026-11-12 11:05", "event": "Auto-triage routed the complaint to Phishing with high confidence (keywords: kyc, link, card details, otp)."},
-        {"date": "2026-11-12 11:40", "event": "URL analyser scored sbi-kyc-verify.top 90/100: brand impersonation, risky TLD, plain HTTP on a login page."},
+        {"date": "2026-11-12 11:40", "event": "URL analyser scored sbi-kyc-verify.example 80/100: brand impersonation, suspicious keywords, plain HTTP on a login page."},
         {"date": "2026-11-12 14:15", "event": "Bank notified to freeze the beneficiary UPI handle; takedown request drafted for the registrar."},
         {"date": "2026-11-13 09:30", "event": "Case escalated to district cybercrime unit for transaction tracing."}
       ]
@@ -29,7 +29,7 @@
       "complainant": "Arghya Sen",
       "city": "Howrah",
       "filed_on": "2026-11-15",
-      "narrative": "Caller posed as a courier executive and said a 450 INR refund required approving a collect request on PhonePe. Complainant scanned the QR code and approved; 24,999 INR was debited instead. The collect request came from refund-desk@okhdfcbank. Caller number +91 9007012345.",
+      "narrative": "Caller posed as a courier executive and said a 450 INR refund required approving a collect request on PhonePe. Complainant scanned the QR code and approved; 24,999 INR was debited instead. The collect request came from payee-demo-2@example. Caller number +91 XXXXX XXXXX (masked placeholder).",
       "timeline": [
         {"date": "2026-11-15 16:02", "event": "Complaint filed with transaction reference screenshots attached."},
         {"date": "2026-11-15 16:03", "event": "Auto-triage routed to UPI / Payment Fraud (keywords: upi, qr code, refund, collect request, debited)."},
@@ -45,11 +45,11 @@
       "complainant": "Debasis Mondal",
       "city": "Siliguri",
       "filed_on": "2026-11-08",
-      "narrative": "Complainant joined a Telegram group promising 30% weekly returns on USDT trading. He invested 3.2 lakh INR across four transfers to a platform at https://royal-fx-gain.xyz/app. Withdrawal is now blocked unless he pays a 15% 'tax'. Group admin used handle @profitguru_official.",
+      "narrative": "Complainant joined a Telegram group promising 30% weekly returns on USDT trading. He invested 3.2 lakh INR across four transfers to a platform at https://royal-fx-gain.example/app. Withdrawal is now blocked unless he pays a 15% 'tax'. Group admin used handle @demo_tipster_example.",
       "timeline": [
         {"date": "2026-11-08 12:00", "event": "Complaint filed; platform URL and wallet addresses recorded."},
         {"date": "2026-11-08 12:04", "event": "Auto-triage routed to Investment & Trading Scam (keywords: trading, usdt, returns, telegram group, withdrawal blocked)."},
-        {"date": "2026-11-09 10:10", "event": "URL analyser: royal-fx-gain.xyz scored 65/100; domain registered weeks ago, no valid TLS history noted by analyst."},
+        {"date": "2026-11-09 10:10", "event": "URL analyser: royal-fx-gain.example scored only 10/100 on structure alone; analyst flagged it manually from the withdrawal-blocked pattern."},
         {"date": "2026-11-11 15:45", "event": "Escalated to state CID crypto tracing cell; exchange freeze request initiated."}
       ]
     },
@@ -62,7 +62,7 @@
       "complainant": "Priya Naskar",
       "city": "Kolkata",
       "filed_on": "2026-11-14",
-      "narrative": "Unknown sender messaged the complainant on WhatsApp with morphed photos and demanded 50,000 INR, threatening to circulate them. The demand included a UPI handle payfast.don@okicici and a threat to message her workplace.",
+      "narrative": "Unknown sender messaged the complainant on WhatsApp with morphed photos and demanded 50,000 INR, threatening to circulate them. The demand included a UPI handle payee-demo-3@example and a threat to message her workplace.",
       "timeline": [
         {"date": "2026-11-14 09:12", "event": "Complaint filed; evidence screenshots preserved with hashes by the desk officer."},
         {"date": "2026-11-14 09:15", "event": "Auto-triage routed to Online Harassment (keywords: morphed, blackmail, threatening, demanding money)."},
@@ -109,7 +109,7 @@
       "complainant": "Moumita Das",
       "city": "Durgapur",
       "filed_on": "2026-11-05",
-      "narrative": "Complainant was told she had won a UK lottery parcel held at customs and must pay 18,500 INR in clearance fees to customs.release@paytm. She paid once, then refused a second demand and reported.",
+      "narrative": "Complainant was told she had won a UK lottery parcel held at customs and must pay 18,500 INR in clearance fees to payee-demo-4@example. She paid once, then refused a second demand and reported.",
       "timeline": [
         {"date": "2026-11-05 14:10", "event": "Complaint filed; single payment receipt attached."},
         {"date": "2026-11-05 14:11", "event": "Auto-triage routed to Lottery & Prize Scam (keywords: lottery, prize, customs, parcel, fees to claim)."},
@@ -126,7 +126,7 @@
       "complainant": "Rahul Barman",
       "city": "Asansol",
       "filed_on": "2026-11-17",
-      "narrative": "After applying on a job site, complainant was emailed a 'verification' link, http://naukri-verify-secure.info/account, asking for a 999 INR registration fee and full card details. Sender email hr-verification@naukri-verify-secure.info.",
+      "narrative": "After applying on a job site, complainant was emailed a 'verification' link, http://naukri-verify-secure.example/account, asking for a 999 INR registration fee and full card details. Sender email hr-demo@naukri-verify-secure.example.",
       "timeline": [
         {"date": "2026-11-17 10:05", "event": "Complaint filed with email headers attached."},
         {"date": "2026-11-17 10:06", "event": "Auto-triage routed to Phishing (keywords: link, card details, verification)."}
@@ -141,11 +141,11 @@
       "complainant": "Sunita Shaw",
       "city": "Kolkata",
       "filed_on": "2026-11-13",
-      "narrative": "A vegetable vendor found that customers' UPI payments for two days went to an unknown handle marketpay.official@okaxis after someone pasted a replacement QR sticker over hers. Estimated loss 32,000 INR. CCTV footage is being collected.",
+      "narrative": "A vegetable vendor found that customers' UPI payments for two days went to an unknown handle payee-demo-5@example after someone pasted a replacement QR sticker over hers. Estimated loss 32,000 INR. CCTV footage is being collected.",
       "timeline": [
         {"date": "2026-11-13 20:15", "event": "Complaint filed at local police station and forwarded to cybercell."},
         {"date": "2026-11-13 20:18", "event": "Auto-triage routed to UPI / Payment Fraud (keywords: upi, qr code, payments)."},
-        {"date": "2026-11-14 11:30", "event": "Aggregator asked to freeze marketpay.official@okaxis and provide KYC of the holder."},
+        {"date": "2026-11-14 11:30", "event": "Aggregator asked to freeze payee-demo-5@example and provide KYC of the holder."},
         {"date": "2026-11-15 09:45", "event": "Escalated: same handle appears in two more market complaints, indicating a pattern."}
       ]
     },
